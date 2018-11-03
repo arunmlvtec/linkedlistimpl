@@ -1,29 +1,106 @@
 package com.linkedlist;
 
+import java.util.Collection;
+
+import com.customexception.IncorrectIndexException;
 import com.node.Node;
 
-public class MyLinkedList<T> {
-	Node<T> start;
-	Node<T> end;
-	Integer size;
-	
-	public Node<T> getStart() {
+public class MyLinkedList<E> {
+	private Node<E> start;
+	private Node<E> end;
+	private Integer size;
+
+	public Node<E> getStart() {
 		return start;
 	}
-	public void setStart(Node<T> start) {
+
+	public void setStart(Node<E> start) {
 		this.start = start;
 	}
-	public Node<T> getEnd() {
+
+	public Node<E> getEnd() {
 		return end;
 	}
-	public void setEnd(Node<T> end) {
+
+	public void setEnd(Node<E> end) {
 		this.end = end;
 	}
+
 	public Integer getSize() {
 		return size;
 	}
-	public void setSize(Integer size) {
-		this.size = size;
+
+	public void add(E e) {
+		Node<E> element = new Node<E>();
+		element.setValue(e);
+		element.setNext(null);
+		end.setNext(element);
+		end = element;
+		if (start == null)
+			start = element;
+		size += 1;
 	}
-	
+
+	public void add(int index, E e) {
+		if (size < (index + 1)) {
+			try {
+				throw new IncorrectIndexException("Incorrect Index entered.");
+			} catch (IncorrectIndexException e1) {
+				System.out.println(e1.getMessage() + " Adding element at the end of the LinkedList!");
+				add(e);
+			}
+		} else {
+			Node<E> element = new Node<E>();
+			element.setValue(e);
+			Node<E> current = start;
+
+			for (int i = 1; i < index; i++) {
+				current = current.getNext();
+			}
+
+			element.setNext(current.getNext());
+			current.setNext(element);
+			size += 1;
+		}
+	}
+
+	public void addAll(Collection<E> c) {
+		for (E e : c) {
+			add(e);
+		}
+	}
+
+	public void addAll(int index, Collection<E> c) {
+		for (E e : c) {
+			add(index, e);
+			index += 1;
+		}
+	}
+
+	public void addFirst(E e) {
+		Node<E> element = new Node<E>();
+		element.setValue(e);
+		element.setNext(start);
+		start = element;
+		size += 1;
+		if (end == null)
+			end = element;
+	}
+
+	public void addLast(E e) {
+		Node<E> element = new Node<E>();
+		element.setValue(e);
+		element.setNext(null);
+		end.setNext(element);
+		end = element;
+		size += 1;
+		if (start == null)
+			start = element;
+	}
+
+	public void clear() {
+		start = null;
+		end = null;
+		size = 0;
+	}
 }
