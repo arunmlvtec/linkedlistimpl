@@ -103,4 +103,36 @@ public class MyLinkedList<E> {
 		end = null;
 		size = 0;
 	}
+	
+	public E get(int index) {
+		if (size < index) {
+			try {
+				throw new IncorrectIndexException("Incorrect Index passed!");
+			} catch (IncorrectIndexException e) {
+				System.out.println(e.getMessage() + "LinkedList size is: "+size);
+			}
+			return null;
+		}
+		else {
+			Node<E> current = start;
+			int i = 1;
+			while (i < index) {
+				current = current.getNext();
+				i += 1;
+			}
+			return current.getValue();
+		}
+	}
+	
+	public int indexOf(E element) {
+		Node<E> current = start;
+		int index = 0;
+		while (current.getNext()!= null) {
+			if (current.getValue() == element)
+				return index;
+			index++;
+		}
+		return -1;
+		
+	}
 }
